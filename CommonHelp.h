@@ -62,7 +62,7 @@
 
 +(UIImage*)getImageByName:(NSString*)imageName;
 
-
++ (NSString *)getTimeFromTimestampset:(NSString *)datetime;//根据时间轴直接返回时间
 + (NSString *)getTimeFromTimestamp:(NSString *)datetime;  //根据时间戳返回几分钟
 + (NSString *)getSinceTimeFromTimestamp:(NSString *)datetime;//根据时间戳返回几分钟之前
 + (CGSize)getSizeFromString:(NSString *)string WithFont:(UIFont *)font withSize:(CGSize)size;//算出适合此文字放得大小
@@ -90,5 +90,15 @@
  */
 + (NSString *)changeStr:(NSString *)string;
 
+//number:需要处理的数字， position：保留小数点第几位，四舍五入
++(NSString *)roundUp:(float)number afterPoint:(int)position;
 
+
+//获取字符串高度
++ (CGFloat)getZSCTextHight:(NSString *)textStr andWidth:(CGFloat)width andTextFontSize:(NSInteger)fontSize;
+
+//获取字符串宽度
++ (CGFloat)getZSCTextWidth:(NSString *)textStr andHeight:(CGFloat)height andTextFontSize:(NSInteger)fontSize;
+//设置字体和颜色
++ (void)setZSCLabelFontAndColorWithLabel:(UILabel *)label andTextFontSize:(NSInteger)fontSize andColor:(UIColor *)color andRange:(NSRange)range;
 @end

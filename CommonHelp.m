@@ -13,6 +13,15 @@
 
 @implementation CommonHelp
 
++(NSString *)roundUp:(float)number afterPoint:(int)position{
+    NSDecimalNumberHandler* roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundUp scale:position raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
+    NSDecimalNumber *ouncesDecimal;
+    NSDecimalNumber *roundedOunces;
+    ouncesDecimal = [[NSDecimalNumber alloc] initWithFloat:number];
+    roundedOunces = [ouncesDecimal decimalNumberByRoundingAccordingToBehavior:roundingBehavior];
+    return [NSString stringWithFormat:@"%@",roundedOunces];
+}
+
 + (NSString *)getStringFromNetWorKString:(id)networkString
 {
     NSString *value = nil;
@@ -246,6 +255,24 @@
     return @"";
     
 }
++ (NSString *)getTimeFromTimestampset:(NSString *)datetime
+{
+    
+    if (datetime) {
+            NSString *string;
+            
+            NSDateFormatter *dateFormatter = nil;
+            if (dateFormatter == nil) {
+                dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy.MM.dd"];
+            }
+            string = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:([datetime doubleValue]/1000)]];
+            return string;
+           }
+    return @"";
+    
+}
+
 
 + (NSString *)getMMWishDeadLineTimeFromDieTime:(NSString *)dietimeString
 {
@@ -326,7 +353,7 @@
     if (!value) {
         return NO;
     }else {
-        length = value.length;
+        length = (int)value.length;
         
         if (length !=15 && length !=18) {
             return NO;
@@ -461,5 +488,35 @@
         return string;
 }
 
+/**
+ *  计算文字宽高
+ */
+
+//获取字符串高度
++ (CGFloat)getZSCTextHight:(NSString *)textStr andWidth:(CGFloat)width andTextFontSize:(NSInteger)fontSize
+{
+    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:fontSize]};
+    CGSize size = [textStr boundingRectWithSize:CGSizeMake(width, 0) options: NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+    return size.height;
+}
+
+//获取字符串宽度
++ (CGFloat)getZSCTextWidth:(NSString *)textStr andHeight:(CGFloat)height andTextFontSize:(NSInteger)fontSize
+{
+    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:fontSize]};
+    CGSize size = [textStr boundingRectWithSize:CGSizeMake(0, height) options: NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+    return size.width;
+}
+//设置字体和颜色
++ (void)setZSCLabelFontAndColorWithLabel:(UILabel *)label andTextFontSize:(NSInteger)fontSize andColor:(UIColor *)color andRange:(NSRange)range
+{
+    NSMutableAttributedString*attributedString=[[NSMutableAttributedString alloc]initWithString: label.text];
+    NSDictionary*dic=@{
+                       NSForegroundColorAttributeName:color,
+                       NSFontAttributeName:[UIFont systemFontOfSize:fontSize]
+                       };
+    [attributedString addAttributes:dic range:range];
+    [label setAttributedText:attributedString];
+}
 
 @end
